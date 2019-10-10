@@ -30,9 +30,9 @@ public class NumberConvector {
         for (int i = degree / 3 + 1; i > 0; i--) {
             char[] numberInterArray = numStr.substring(numberStep, numberStep + stepLength).toCharArray();
             result = result.concat(insertWords(data, degree - degreeStep, numberInterArray));
-
             numberStep += stepLength;
             stepLength = 3;
+
             String tmpDegree = correctDegreeDeclension(degree - degreeStep, numberInterArray, dataDegree);
             result = (tmpDegree != null) ? result.concat(tmpDegree + " ") : result;
             degreeStep += 3;
@@ -41,30 +41,7 @@ public class NumberConvector {
         return result.trim();
     }
 
-    public Map<Integer, String> readData(String path) throws IOException {
-        FileInputStream file = new FileInputStream(new File(path));
-        Workbook workbook = new XSSFWorkbook(file);
-        Sheet sheet = workbook.getSheetAt(0);
-
-        Map<Integer, String> data = new HashMap<>();
-        int curValue = 0;
-        for (Row row : sheet) {
-            for (Cell cell : row) {
-                switch (cell.getCellTypeEnum()) {
-                    case STRING:
-                        data.put(curValue, cell.getRichStringCellValue().getString());
-                        break;
-                    case NUMERIC:
-                        curValue = (int) cell.getNumericCellValue();
-                        break;
-                }
-            }
-        }
-        return data;
-    }
-
-
-    public String correctDeclension(Integer number, Map<Integer, String> data) {
+    public String correctThousandDeclension(Integer number, Map<Integer, String> data) {
         switch (number) {
             case 1:
                 return ONE_FEM;
@@ -128,7 +105,9 @@ public class NumberConvector {
             Integer number = (numberArray[j] == '1' && j == numberArray.length - 2)
                     ? Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1])
                     : Character.getNumericValue(numberArray[j]) * localDegree;
-            String wordValue = (degree == 3 && (numberArray.length == 1 || numberArray[1] != '1')) ? correctDeclension(number, data) : data.get(number);
+            String wordValue = (degree == 3 && (numberArray.length == 1 || numberArray[numberArray.length - 2] != '1'))
+                    ? correctThousandDeclension(number, data)
+                    : data.get(number);
 
             if (wordValue != null) {
                 str = str.concat(wordValue + " ");
@@ -137,8 +116,30 @@ public class NumberConvector {
         return str;
     }
 
+    public Map<Integer, String> readData(String path) throws IOException {
+        FileInputStream file = new FileInputStream(new File(path));
+        Workbook workbook = new XSSFWorkbook(file);
+        Sheet sheet = workbook.getSheetAt(0);
+
+        Map<Integer, String> data = new HashMap<>();
+        int curValue = 0;
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                switch (cell.getCellTypeEnum()) {
+                    case STRING:
+                        data.put(curValue, cell.getRichStringCellValue().getString());
+                        break;
+                    case NUMERIC:
+                        curValue = (int) cell.getNumericCellValue();
+                        break;
+                }
+            }
+        }
+        return data;
+    }
+
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(3485621479L));
+        System.out.println(tmp.translateNumberToString(121000L));
     }
 }
