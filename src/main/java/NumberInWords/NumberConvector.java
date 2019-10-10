@@ -125,26 +125,22 @@ public class NumberConvector {
     }
 
     public String insertWords(Map<Integer, String> data, Integer degree, char[] numberArray) {
-        if (numberArray.length == 2 && numberArray[0] == '1') {
-            return data.get(Integer.valueOf(new String(numberArray))) + " ";
-        } else {
-            String str = "";
-            for (int j = 0; j < numberArray.length; j++) {
-                Integer localDegree = (int) Math.pow(10, numberArray.length - 1 - j);
-                Integer number = (j == 1 && j != numberArray.length - 1 && numberArray[j] == '1')
-                        ? Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1])
-                        : Character.getNumericValue(numberArray[j]) * localDegree;
-                String wordValue = (degree == 3 && (numberArray.length == 1 || numberArray[1] != '1')) ? correctDeclension(number, data) : data.get(number);
-                if (wordValue != null) {
-                    str = str.concat(wordValue + " ");
-                }
+        String str = "";
+        for (int j = 0; j < numberArray.length; j++) {
+            Integer localDegree = (int) Math.pow(10, numberArray.length - 1 - j);
+            Integer number = (numberArray[j] == '1' && j == numberArray.length - 2)
+                    ? Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1])
+                    : Character.getNumericValue(numberArray[j]) * localDegree;
+            String wordValue = (degree == 3 && (numberArray.length == 1 || numberArray[1] != '1')) ? correctDeclension(number, data) : data.get(number);
+            if (wordValue != null) {
+                str = str.concat(wordValue + " ");
             }
-            return str;
         }
+        return str;
     }
 
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(2012345L));
+        System.out.println(tmp.translateNumberToString(3485621479L));
     }
 }
