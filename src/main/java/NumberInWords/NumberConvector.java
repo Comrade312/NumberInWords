@@ -16,32 +16,28 @@ import static NumberInWords.NumberDeclensionContsrants.*;
 
 public class NumberConvector {
     public String translateNumberToString(Long num) throws IOException {
-
         Map<Integer, String> data = readData("core.xlsx");
         Map<Integer, String> dataDegree = readData("degree.xlsx");
 
         String result = "";
-
         String numStr = num.toString();
-        int degree = (numStr.length() - 1 - (numStr.length() - 1) % 3);
 
+        int degree = (numStr.length() - 1 - (numStr.length() - 1) % 3);
         int stepLength = (numStr.length() % 3 == 0) ? 3 : numStr.length() % 3;
         int numberStep = 0;
-        int degreStep = 0;
+        int degreeStep = 0;
 
         for (int i = degree / 3 + 1; i > 0; i--) {
-
             char[] numberInterArray = numStr.substring(numberStep, numberStep + stepLength).toCharArray();
-            result = result.concat(insertWords(data, degree - degreStep, numberInterArray));
+            result = result.concat(insertWords(data, degree - degreeStep, numberInterArray));
 
             numberStep += stepLength;
             stepLength = 3;
-            String tmpDegree = correctDegreeDeclension(degree - degreStep, numberInterArray, dataDegree);
+            String tmpDegree = correctDegreeDeclension(degree - degreeStep, numberInterArray, dataDegree);
             result = (tmpDegree != null) ? result.concat(tmpDegree + " ") : result;
-            degreStep += 3;
+            degreeStep += 3;
 
         }
-
         return result.trim();
     }
 
@@ -97,6 +93,7 @@ public class NumberConvector {
         Integer value = (numberArray.length > 1 && numberArray[numberArray.length - 2] == '1')
                 ? Character.getNumericValue('1' + numberArray[numberArray.length - 1])
                 : Character.getNumericValue(numberArray[numberArray.length - 1]);
+
         if (degree > 0) {
             if (degree == 3) {
                 switch (value) {
@@ -132,6 +129,7 @@ public class NumberConvector {
                     ? Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1])
                     : Character.getNumericValue(numberArray[j]) * localDegree;
             String wordValue = (degree == 3 && (numberArray.length == 1 || numberArray[1] != '1')) ? correctDeclension(number, data) : data.get(number);
+
             if (wordValue != null) {
                 str = str.concat(wordValue + " ");
             }
