@@ -41,7 +41,7 @@ public class NumberConvector {
         return result.trim();
     }
 
-    public String correctThousandDeclension(Integer number, Map<Integer, String> data) {
+    public String correctDeclension(Integer number, Map<Integer, String> data) {
         switch (number) {
             case 1:
                 return ONE_FEM;
@@ -106,7 +106,7 @@ public class NumberConvector {
                     ? Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1])
                     : Character.getNumericValue(numberArray[j]) * localDegree;
             String wordValue = (degree == 3 && (numberArray.length == 1 || numberArray[numberArray.length - 2] != '1'))
-                    ? correctThousandDeclension(number, data)
+                    ? correctDeclension(number, data)
                     : data.get(number);
 
             if (wordValue != null) {
@@ -140,6 +140,6 @@ public class NumberConvector {
 
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(121000L));
+        System.out.println(tmp.translateNumberToString(5421378912L));
     }
 }
