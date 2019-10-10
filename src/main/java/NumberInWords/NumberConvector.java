@@ -145,6 +145,6 @@ public class NumberConvector {
 
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(134345L));
+        System.out.println(tmp.translateNumberToString(2012345L));
     }
 }
