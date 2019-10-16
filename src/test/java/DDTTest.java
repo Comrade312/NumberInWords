@@ -10,6 +10,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,10 @@ public class DDTTest {
     @Test
     public void shouldUpgradeStatusBasedOnPointsEarned() throws IOException {
         for (int row = 1; row < data.size(); row++) {
-            result = numberConvector.translateNumberToString(Double.valueOf(data.get(row).get(0)).longValue());
+
+            String numStr = data.get(row).get(0);
+            BigDecimal curNumber = new BigDecimal(numStr);
+            result = numberConvector.translateNumberToString(curNumber.toBigInteger());
             System.out.println("Строка - " + row);
             System.out.println("Результат - " + result);
             System.out.println("Ожидаемый - " + data.get(row).get(1));

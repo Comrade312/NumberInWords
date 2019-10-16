@@ -9,18 +9,21 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static NumberInWords.NumberDeclensionContsrants.*;
 
 public class NumberConvector {
-    public String translateNumberToString(Long num) throws IOException {
+    public String translateNumberToString(BigInteger num) throws IOException {
         Map<Integer, String> data = readData("core.xlsx");
         Map<Integer, String> dataDegree = readData("degree.xlsx");
 
         String result = "";
-        String numStr = num.toString();
+        String numStr = numberInspection(num, Collections.max(dataDegree.keySet())).toString();
 
         int degree = (numStr.length() - 1 - (numStr.length() - 1) % 3);
         int stepLength = (numStr.length() % 3 == 0) ? 3 : numStr.length() % 3;
@@ -124,8 +127,19 @@ public class NumberConvector {
         return data;
     }
 
+    public BigInteger numberInspection(BigInteger number, int maxDegree) throws NumberLengthException{
+        int numberLength = (int) (Math.log10(number.doubleValue()) + 1);
+        BigDecimal maxNumber = BigDecimal.valueOf(Math.pow(10, maxDegree + 3) - 1);
+
+        if(numberLength > maxDegree + 3) {
+            throw new NumberLengthException("Число не должно превышать " + maxNumber.toPlainString());
+        }
+
+        return number;
+    }
+
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(5421378912L));
+        System.out.println(tmp.translateNumberToString(new BigInteger("12321321321")));
     }
 }
