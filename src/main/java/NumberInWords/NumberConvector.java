@@ -60,9 +60,14 @@ public class NumberConvector {
     }
 
     public String correctDegreeDeclension(Integer degree, char[] numberArray, Map<Integer, String> dataDegree) {
-        Integer value = (numberArray.length > 1 && numberArray[numberArray.length - 2] == '1')
-                ? Character.getNumericValue('1' + numberArray[numberArray.length - 1])
-                : Character.getNumericValue(numberArray[numberArray.length - 1]);
+        int value = 0;
+
+        if (numberArray.length > 1 && numberArray[numberArray.length - 2] == '1') {
+            value = Character.getNumericValue('1' + numberArray[numberArray.length - 1]);
+        }
+        else {
+            value = Character.getNumericValue(numberArray[numberArray.length - 1]);
+        }
 
         if (degree > 0) {
             if (degree == 3) {
@@ -93,14 +98,25 @@ public class NumberConvector {
 
     public String insertWords(Map<Integer, String> data, Integer degree, char[] numberArray) {
         String str = "";
+        String wordValue = "";
+        int number = 0;
+
         for (int j = 0; j < numberArray.length; j++) {
             Integer localDegree = (int) Math.pow(10, numberArray.length - 1 - j);
-            Integer number = (numberArray[j] == '1' && j == numberArray.length - 2)
-                    ? Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1])
-                    : Character.getNumericValue(numberArray[j]) * localDegree;
-            String wordValue = (degree == 3 && (numberArray.length == 1 || numberArray[numberArray.length - 2] != '1'))
-                    ? correctDeclension(number, data)
-                    : data.get(number);
+
+            if (numberArray[j] == '1' && j == numberArray.length - 2) {
+                number = Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1]);
+            }
+            else {
+                number = Character.getNumericValue(numberArray[j]) * localDegree;
+            }
+
+            if (degree == 3 && (numberArray.length == 1 || numberArray[numberArray.length - 2] != '1')){
+                wordValue = correctDeclension(number, data);
+            }
+            else {
+                wordValue = data.get(number);
+            }
 
             if (wordValue != null) {
                 str = str.concat(wordValue + " ");
