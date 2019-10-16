@@ -11,7 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static NumberInWords.NumberDeclensionContsrants.*;
+import static NumberInWords.NumberDeclensionContsrants.DEGREE_PLURAL_ENDING;
+import static NumberInWords.NumberDeclensionContsrants.DEGREE_SINGULAR_ENDING;
+import static NumberInWords.NumberDeclensionContsrants.ONE_FEM;
+import static NumberInWords.NumberDeclensionContsrants.ONE_THOUSAND_PLURAL;
+import static NumberInWords.NumberDeclensionContsrants.ONE_THOUSAND_PLURAL_GENTITIVE;
+import static NumberInWords.NumberDeclensionContsrants.TWO_FEM;
 
 public class NumberConvector {
     private static final String CORE_FILENAME = "core.properties";

@@ -1,10 +1,6 @@
 import NumberInWords.NumberConvector;
 import NumberInWords.NumberLengthException;
-import jdk.Exported;
-import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -40,7 +36,7 @@ public class NumberConvectorTest {
     @Test
     public void correctDegreeDeclension_positive() {
         int degree = 6;
-        char[] numberArray = {'2','3','4'};
+        char[] numberArray = {'2', '3', '4'};
         Mockito.when(data.get(degree)).thenReturn("миллион");
         String result = convector.correctDegreeDeclension(degree, numberArray, data);
         String expectedResult = "миллиона";
@@ -50,7 +46,7 @@ public class NumberConvectorTest {
     @Test
     public void insertWords_positive() {
         int degree = 6;
-        char[] numberArray = {'2','3','4'};
+        char[] numberArray = {'2', '3', '4'};
         Mockito.when(data.get(200)).thenReturn("двесте");
         Mockito.when(data.get(30)).thenReturn("тридцать");
         Mockito.when(data.get(4)).thenReturn("четыре");
@@ -62,7 +58,7 @@ public class NumberConvectorTest {
     @Test
     public void insertWordsForThousands_positive() {
         int degree = 3;
-        char[] numberArray = {'2','0','1'};
+        char[] numberArray = {'2', '0', '1'};
         Mockito.when(data.get(200)).thenReturn("двесте");
         String result = convector.insertWords(data, degree, numberArray);
         String expectedResult = "двесте одна";
