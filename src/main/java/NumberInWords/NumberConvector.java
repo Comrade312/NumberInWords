@@ -112,16 +112,16 @@ public class NumberConvector {
 
         Map<Integer, String> data = new HashMap<>();
         int curValue = 0;
+        int counter = 0;
         for (Row row : sheet) {
             for (Cell cell : row) {
-                switch (cell.getCellTypeEnum()) {
-                    case STRING:
-                        data.put(curValue, cell.getRichStringCellValue().getString());
-                        break;
-                    case NUMERIC:
-                        curValue = (int) cell.getNumericCellValue();
-                        break;
+                if(counter % 2 == 0){
+                    curValue = (int) cell.getNumericCellValue();
                 }
+                else {
+                    data.put(curValue, cell.getRichStringCellValue().getString());
+                }
+                counter++;
             }
         }
         return data;
