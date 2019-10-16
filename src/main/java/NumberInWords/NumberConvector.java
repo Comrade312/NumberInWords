@@ -1,12 +1,8 @@
 package NumberInWords;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -18,9 +14,12 @@ import java.util.Properties;
 import static NumberInWords.NumberDeclensionContsrants.*;
 
 public class NumberConvector {
+    private static final String CORE_FILENAME = "core.properties";
+    private static final String DEGREE_FILENAME = "degree.properties";
+
     public String translateNumberToString(BigInteger num) throws IOException {
-        Map<Integer, String> data = getData("core.properties");
-        Map<Integer, String> dataDegree = getData("degree.properties");
+        Map<Integer, String> data = getData(CORE_FILENAME);
+        Map<Integer, String> dataDegree = getData(DEGREE_FILENAME);
 
         String result = "";
         String numStr = numberInspection(num, Collections.max(dataDegree.keySet())).toString();
@@ -105,27 +104,27 @@ public class NumberConvector {
         return str;
     }
 
-    public Map<Integer, String> getData(String path){
+    public Map<Integer, String> getData(String path) throws FileNotFoundException {
         Map<Integer, String> data = new HashMap<>();
 
         try (InputStream input = NumberConvector.class.getClassLoader().getResourceAsStream(path)) {
             Properties prop = new Properties();
             prop.load(input);
-            for(String key: prop.stringPropertyNames()){
+            for (String key : prop.stringPropertyNames()) {
                 data.put(Integer.valueOf(key), new String(prop.getProperty(key).getBytes(StandardCharsets.UTF_8)));
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException | NullPointerException ex) {
+            throw new FileNotFoundException();
         }
 
         return data;
     }
 
-    public BigInteger numberInspection(BigInteger number, int maxDegree) throws NumberLengthException{
+    public BigInteger numberInspection(BigInteger number, int maxDegree) throws NumberLengthException {
         int numberLength = (int) (Math.log10(number.doubleValue()) + 1);
         BigDecimal maxNumber = BigDecimal.valueOf(Math.pow(10, maxDegree + 3) - 1);
 
-        if(numberLength > maxDegree + 3) {
+        if (numberLength > maxDegree + 3) {
             throw new NumberLengthException("Число не должно превышать " + maxNumber.toPlainString());
         }
 

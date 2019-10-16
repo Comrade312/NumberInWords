@@ -1,10 +1,11 @@
 package NumberInWords;
 
 public class NumberLengthException extends RuntimeException {
-    public NumberLengthException(){
+    public NumberLengthException() {
         super("Слишкол длинное число");
     }
-    public NumberLengthException(String message){
+
+    public NumberLengthException(String message) {
         super(message);
     }
 }

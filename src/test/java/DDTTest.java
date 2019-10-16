@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +29,9 @@ public class DDTTest {
         numberConvector = new NumberConvector();
     }
 
-
     @Test
     public void shouldUpgradeStatusBasedOnPointsEarned() throws IOException {
         for (int row = 1; row < data.size(); row++) {
-
             String numStr = data.get(row).get(0);
             BigDecimal curNumber = new BigDecimal(numStr);
             result = numberConvector.translateNumberToString(curNumber.toBigInteger());
