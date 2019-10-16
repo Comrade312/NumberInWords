@@ -11,10 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,7 +28,7 @@ public class DDTTest {
 
     @Test
     public void shouldUpgradeStatusBasedOnPointsEarned() throws IOException {
-        for (int row = 1; row < data.size(); row++) {
+        for (int row = 0; row < data.size(); row++) {
             String numStr = data.get(row).get(0);
             BigDecimal curNumber = new BigDecimal(numStr);
             result = numberConvector.translateNumberToString(curNumber.toBigInteger());
@@ -43,24 +40,27 @@ public class DDTTest {
     }
 
     private Map<Integer, List<String>> getTestData(String path) throws IOException {
-
         FileInputStream file = new FileInputStream(new File(path));
         Workbook workbook = new XSSFWorkbook(file);
         Sheet sheet = workbook.getSheetAt(0);
 
         Map<Integer, List<String>> data = new HashMap<>();
         int i = 0;
-        for (Row row : sheet) {
+        int counter = 0;
+        Iterator<Row> iterator = sheet.rowIterator();
+        iterator.next();
+
+        while (iterator.hasNext()) {
+            Row row = iterator.next();
             data.put(i, new ArrayList<String>());
+
             for (Cell cell : row) {
-                switch (cell.getCellTypeEnum()) {
-                    case STRING:
-                        data.get(new Integer(i)).add(cell.getRichStringCellValue().getString());
-                        break;
-                    case NUMERIC:
-                        data.get(i).add(cell.getNumericCellValue() + "");
-                        break;
+                if (counter % 2 == 0) {
+                    data.get(i).add(cell.getNumericCellValue() + "");
+                } else {
+                    data.get(i).add(cell.getRichStringCellValue().getString());
                 }
+                counter++;
             }
             i++;
         }
