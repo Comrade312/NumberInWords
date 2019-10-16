@@ -6,21 +6,21 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import static NumberInWords.NumberDeclensionContsrants.*;
 
 public class NumberConvector {
     public String translateNumberToString(BigInteger num) throws IOException {
-        Map<Integer, String> data = readData("core.xlsx");
-        Map<Integer, String> dataDegree = readData("degree.xlsx");
+        Map<Integer, String> data = getData("core.properties");
+        Map<Integer, String> dataDegree = getData("degree.properties");
 
         String result = "";
         String numStr = numberInspection(num, Collections.max(dataDegree.keySet())).toString();
@@ -105,25 +105,19 @@ public class NumberConvector {
         return str;
     }
 
-    public Map<Integer, String> readData(String path) throws IOException {
-        FileInputStream file = new FileInputStream(new File(path));
-        Workbook workbook = new XSSFWorkbook(file);
-        Sheet sheet = workbook.getSheetAt(0);
-
+    public Map<Integer, String> getData(String path){
         Map<Integer, String> data = new HashMap<>();
-        int curValue = 0;
-        int counter = 0;
-        for (Row row : sheet) {
-            for (Cell cell : row) {
-                if(counter % 2 == 0){
-                    curValue = (int) cell.getNumericCellValue();
-                }
-                else {
-                    data.put(curValue, cell.getRichStringCellValue().getString());
-                }
-                counter++;
+
+        try (InputStream input = NumberConvector.class.getClassLoader().getResourceAsStream(path)) {
+            Properties prop = new Properties();
+            prop.load(input);
+            for(String key: prop.stringPropertyNames()){
+                data.put(Integer.valueOf(key), new String(prop.getProperty(key).getBytes(StandardCharsets.UTF_8)));
             }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+
         return data;
     }
 
@@ -140,6 +134,6 @@ public class NumberConvector {
 
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(new BigInteger("12321321321")));
+        System.out.println(tmp.translateNumberToString(new BigInteger("32121321321")));
     }
 }
