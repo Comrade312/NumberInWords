@@ -47,20 +47,6 @@ public class NumberConvector {
                 return ONE_FEM;
             case 2:
                 return TWO_FEM;
-            case 3:
-                return THREE;
-            case 4:
-                return FOUR;
-            case 5:
-                return FIVE;
-            case 6:
-                return SIX;
-            case 7:
-                return SEVEN;
-            case 8:
-                return EIGHT;
-            case 9:
-                return NINE;
             default:
                 return data.get(number);
         }
@@ -90,9 +76,9 @@ public class NumberConvector {
                     case 2:
                     case 3:
                     case 4:
-                        return dataDegree.get(degree) + "a";
+                        return dataDegree.get(degree) + DEGREE_SINGULAR_ENDING;
                     default:
-                        return dataDegree.get(degree) + "ов";
+                        return dataDegree.get(degree) + DEGREE_PLURAL_ENDING;
                 }
             }
         } else return null;
