@@ -11,17 +11,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static NumberInWords.NumberDeclensionContsrants.DEGREE_PLURAL_ENDING;
-import static NumberInWords.NumberDeclensionContsrants.DEGREE_SINGULAR_ENDING;
-import static NumberInWords.NumberDeclensionContsrants.ONE_FEM;
-import static NumberInWords.NumberDeclensionContsrants.ONE_THOUSAND_PLURAL;
-import static NumberInWords.NumberDeclensionContsrants.ONE_THOUSAND_PLURAL_GENTITIVE;
-import static NumberInWords.NumberDeclensionContsrants.TWO_FEM;
+import static NumberInWords.NumberDeclensionConstraints.DEGREE_PLURAL_ENDING;
+import static NumberInWords.NumberDeclensionConstraints.DEGREE_SINGULAR_ENDING;
+import static NumberInWords.NumberDeclensionConstraints.ONE_FEM;
+import static NumberInWords.NumberDeclensionConstraints.ONE_THOUSAND_PLURAL;
+import static NumberInWords.NumberDeclensionConstraints.ONE_THOUSAND_PLURAL_GENTITIVE;
+import static NumberInWords.NumberDeclensionConstraints.TWO_FEM;
 
+/**
+ * Converting a number into a word form.
+ */
 public class NumberConvector {
     private static final String CORE_FILENAME = "core.properties";
     private static final String DEGREE_FILENAME = "degree.properties";
 
+    /**
+     * Convert number into words.
+     *
+     * @param num - number for convertation.
+     * @return word meaning of number.
+     * @throws IOException
+     */
     public String translateNumberToString(BigInteger num) throws IOException {
         Map<Integer, String> data = getData(CORE_FILENAME);
         Map<Integer, String> dataDegree = getData(DEGREE_FILENAME);
@@ -48,6 +58,13 @@ public class NumberConvector {
         return result.trim();
     }
 
+    /**
+     * Return special word for number of thousandth degree.
+     *
+     * @param number - number for convertation.
+     * @param data   - library with meanings of number-word.
+     * @return word meaning of number.
+     */
     public String correctDeclension(Integer number, Map<Integer, String> data) {
         switch (number) {
             case 1:
@@ -59,13 +76,20 @@ public class NumberConvector {
         }
     }
 
+    /**
+     * Change the endings of exponential numerators depending on the degree.
+     *
+     * @param degree      - degree of number.
+     * @param numberArray - array of numbers in char symbols.
+     * @param dataDegree  - library with meanings degree-word.
+     * @return correct word meaning of number degree.
+     */
     public String correctDegreeDeclension(Integer degree, char[] numberArray, Map<Integer, String> dataDegree) {
         int value = 0;
 
         if (numberArray.length > 1 && numberArray[numberArray.length - 2] == '1') {
             value = Character.getNumericValue('1' + numberArray[numberArray.length - 1]);
-        }
-        else {
+        } else {
             value = Character.getNumericValue(numberArray[numberArray.length - 1]);
         }
 
@@ -96,6 +120,14 @@ public class NumberConvector {
         } else return null;
     }
 
+    /**
+     * Replacement of numbers with their symbolic values.
+     *
+     * @param data        - library with meanings of number-word.
+     * @param degree      - degree of number.
+     * @param numberArray - array of numbers in char symbols.
+     * @return symbolic value of part of inserted number.
+     */
     public String insertWords(Map<Integer, String> data, Integer degree, char[] numberArray) {
         String str = "";
         String wordValue = "";
@@ -106,15 +138,13 @@ public class NumberConvector {
 
             if (numberArray[j] == '1' && j == numberArray.length - 2) {
                 number = Character.getNumericValue(numberArray[j]) * localDegree + Character.getNumericValue(numberArray[j++ + 1]);
-            }
-            else {
+            } else {
                 number = Character.getNumericValue(numberArray[j]) * localDegree;
             }
 
-            if (degree == 3 && (numberArray.length == 1 || numberArray[numberArray.length - 2] != '1')){
+            if (degree == 3 && (numberArray.length == 1 || numberArray[numberArray.length - 2] != '1')) {
                 wordValue = correctDeclension(number, data);
-            }
-            else {
+            } else {
                 wordValue = data.get(number);
             }
 
@@ -125,6 +155,13 @@ public class NumberConvector {
         return str;
     }
 
+    /**
+     * Get data from properties files.
+     *
+     * @param path - path to file.
+     * @return library with meanings of number-word.
+     * @throws FileNotFoundException
+     */
     public Map<Integer, String> getData(String path) throws FileNotFoundException {
         Map<Integer, String> data = new HashMap<>();
 
@@ -141,6 +178,14 @@ public class NumberConvector {
         return data;
     }
 
+    /**
+     * Сhecking the number for exceeding the character limit.
+     *
+     * @param number    - inserted number.
+     * @param maxDegree - maximum degree provided by the dictionary.
+     * @return inserted number.
+     * @throws NumberLengthException
+     */
     public BigInteger numberInspection(BigInteger number, int maxDegree) throws NumberLengthException {
         int numberLength = (int) (Math.log10(number.doubleValue()) + 1);
         BigDecimal maxNumber = BigDecimal.valueOf(Math.pow(10, maxDegree + 3) - 1);
