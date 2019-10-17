@@ -1,4 +1,6 @@
-package NumberInWords;
+package NumberInWords.main;
+
+import NumberInWords.exception.NumberLengthException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,12 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static NumberInWords.NumberDeclensionConstraints.DEGREE_PLURAL_ENDING;
-import static NumberInWords.NumberDeclensionConstraints.DEGREE_SINGULAR_ENDING;
-import static NumberInWords.NumberDeclensionConstraints.ONE_FEM;
-import static NumberInWords.NumberDeclensionConstraints.ONE_THOUSAND_PLURAL;
-import static NumberInWords.NumberDeclensionConstraints.ONE_THOUSAND_PLURAL_GENTITIVE;
-import static NumberInWords.NumberDeclensionConstraints.TWO_FEM;
+import static NumberInWords.constraints.NumberDeclensionConstraints.DEGREE_PLURAL_ENDING;
+import static NumberInWords.constraints.NumberDeclensionConstraints.DEGREE_SINGULAR_ENDING;
+import static NumberInWords.constraints.NumberDeclensionConstraints.ONE_FEM;
+import static NumberInWords.constraints.NumberDeclensionConstraints.ONE_THOUSAND_PLURAL;
+import static NumberInWords.constraints.NumberDeclensionConstraints.ONE_THOUSAND_PLURAL_GENTITIVE;
+import static NumberInWords.constraints.NumberDeclensionConstraints.TWO_FEM;
 
 /**
  * Converting a number into a word form.

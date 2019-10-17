@@ -1,4 +1,4 @@
-package NumberInWords;
+package NumberInWords.exception;
 
 public class NumberLengthException extends RuntimeException {
     public NumberLengthException() {

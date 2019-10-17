@@ -1,4 +1,4 @@
-import NumberInWords.NumberConvector;
+import NumberInWords.main.NumberConvector;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

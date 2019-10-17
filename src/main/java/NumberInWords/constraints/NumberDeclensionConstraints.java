@@ -1,4 +1,4 @@
-package NumberInWords;
+package NumberInWords.constraints;
 
 /**
  * Contains constraints for specific cases in declension of numbers.

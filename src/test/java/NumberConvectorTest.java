@@ -1,5 +1,5 @@
-import NumberInWords.NumberConvector;
-import NumberInWords.NumberLengthException;
+import NumberInWords.main.NumberConvector;
+import NumberInWords.exception.NumberLengthException;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
