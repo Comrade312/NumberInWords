@@ -48,12 +48,16 @@ public class NumberConvector {
 
         for (int i = degree / 3 + 1; i > 0; i--) {
             char[] numberInterArray = numStr.substring(numberStep, numberStep + stepLength).toCharArray();
-            result = result.concat(insertWords(data, degree - degreeStep, numberInterArray));
+            String tmpResult = insertWords(data, degree - degreeStep, numberInterArray);
+
+            if (!tmpResult.isEmpty()) {
+                result = result.concat(tmpResult);
+                String tmpDegree = correctDegreeDeclension(degree - degreeStep, numberInterArray, dataDegree);
+                result = (tmpDegree != null) ? result.concat(tmpDegree + " ") : result;
+            }
+
             numberStep += stepLength;
             stepLength = 3;
-
-            String tmpDegree = correctDegreeDeclension(degree - degreeStep, numberInterArray, dataDegree);
-            result = (tmpDegree != null) ? result.concat(tmpDegree + " ") : result;
             degreeStep += 3;
 
         }
@@ -201,6 +205,6 @@ public class NumberConvector {
 
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(new BigInteger("32121321321")));
+        System.out.println(tmp.translateNumberToString(new BigInteger("31234761234")));
     }
 }
