@@ -205,6 +205,6 @@ public class NumberConvector {
 
     public static void main(String[] args) throws IOException {
         NumberConvector tmp = new NumberConvector();
-        System.out.println(tmp.translateNumberToString(new BigInteger("31234761234")));
+        System.out.println(tmp.translateNumberToString(new BigInteger("3000000000000004")));
     }
 }
